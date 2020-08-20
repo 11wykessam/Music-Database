@@ -1,8 +1,12 @@
 package com.wykessam.musicdatabase.controllers;
 
 import com.wykessam.musicdatabase.assemblers.AlbumAssembler;
+import com.wykessam.musicdatabase.assemblers.GenreAssembler;
 import com.wykessam.musicdatabase.model.Album;
+import com.wykessam.musicdatabase.model.AlbumDTO;
+import com.wykessam.musicdatabase.model.GenreDTO;
 import com.wykessam.musicdatabase.services.AlbumService;
+import com.wykessam.musicdatabase.services.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -30,10 +34,14 @@ public class AlbumController {
     // the assembler responsible for producing entity models.
     private final AlbumAssembler albumAssembler;
 
+    // the assembler responsible for producing entity modles of genres.
+    private final GenreAssembler genreAssembler;
+
     @Autowired
-    public AlbumController(AlbumService albumService, AlbumAssembler albumAssembler) {
+    public AlbumController(AlbumService albumService, AlbumAssembler albumAssembler, GenreAssembler genreAssembler) {
         this.albumService = albumService;
         this.albumAssembler = albumAssembler;
+        this.genreAssembler = genreAssembler;
     }
 
     /**
@@ -41,9 +49,9 @@ public class AlbumController {
      * @return {@link CollectionModel} object.
      */
     @GetMapping(value = "")
-    public CollectionModel<EntityModel<Album>> all() {
+    public CollectionModel<EntityModel<AlbumDTO>> all() {
 
-        List<EntityModel<Album>> albums = albumService.all().stream()
+        List<EntityModel<AlbumDTO>> albums = albumService.all().stream()
                 .map(albumAssembler::toModel).collect(Collectors.toList());
 
         return CollectionModel.of(
@@ -59,9 +67,28 @@ public class AlbumController {
      * @return {@link EntityModel} object.
      */
     @GetMapping(value = "/{id}")
-    public EntityModel<Album> one(@PathVariable Long id) {
+    public EntityModel<AlbumDTO> one(@PathVariable Long id) {
 
         return albumAssembler.toModel(albumService.getById(id));
+
+    }
+
+    /**
+     * Mapping to get genres associated with album.
+     * @param id Id of the album.
+     * @return {@link CollectionModel} object.
+     */
+    @GetMapping(value = "/{id}/genres")
+    public CollectionModel<EntityModel<GenreDTO>> getGenres(@PathVariable Long id) {
+
+        // get list of entity models.
+        List<EntityModel<GenreDTO>> genres = albumService.getGenresByAlbumId(id).stream()
+                .map(genreAssembler::toModel).collect(Collectors.toList());
+
+        return CollectionModel.of(
+                genres,
+                linkTo(methodOn(GenreController.class).all()).withRel("genres")
+        );
 
     }
 

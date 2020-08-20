@@ -2,6 +2,7 @@ package com.wykessam.musicdatabase.services;
 
 import com.wykessam.musicdatabase.exceptions.AlbumNotFoundException;
 import com.wykessam.musicdatabase.model.Album;
+import com.wykessam.musicdatabase.model.Genre;
 import com.wykessam.musicdatabase.repositories.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,19 @@ public class AlbumService {
 
         return albumRepository.findById(id)
                 .orElseThrow(() -> new AlbumNotFoundException(id));
+
+    }
+
+    /**
+     * If it exists, get the genres associated with a given album.
+     * @param id Id of {@link Album} being requesed.
+     * @return {@link List<Genre>} object.
+     * @throws AlbumNotFoundException thrown if no album with id found.
+     */
+    public List<Genre> getGenresByAlbumId(Long id) throws AlbumNotFoundException {
+
+        Album album = getById(id);
+        return album.getGenres();
 
     }
 

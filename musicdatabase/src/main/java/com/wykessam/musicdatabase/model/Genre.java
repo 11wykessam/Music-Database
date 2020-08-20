@@ -2,39 +2,36 @@ package com.wykessam.musicdatabase.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * JPA Representation of an artist.
- */
-@Entity(name = "ARTIST")
-@Table(name = "ARTIST")
+@Entity(name = "GENRE")
+@Table(name = "GENRE")
 @Data
 @NoArgsConstructor
-public class Artist {
+public class Genre {
 
-    @Column(name = "ARTIST_ID")
+    @Column(name = "GENRE_ID")
     @Id @GeneratedValue private Long id;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "artist")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.EAGER)
     private List<Album> albums;
 
-    public Artist(String name) {
+    public Genre(String name) {
         this.name = name;
         this.albums = new ArrayList<>();
     }
 
-    public ArtistDTO toDTO() {
+    public GenreDTO toDTO() {
 
-        return new ArtistDTO(id, name);
+        return new GenreDTO(id, name);
 
     }
-
 
 }

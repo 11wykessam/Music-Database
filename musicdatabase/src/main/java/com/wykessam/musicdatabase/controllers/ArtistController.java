@@ -3,7 +3,9 @@ package com.wykessam.musicdatabase.controllers;
 import com.wykessam.musicdatabase.assemblers.AlbumAssembler;
 import com.wykessam.musicdatabase.assemblers.ArtistAssembler;
 import com.wykessam.musicdatabase.model.Album;
+import com.wykessam.musicdatabase.model.AlbumDTO;
 import com.wykessam.musicdatabase.model.Artist;
+import com.wykessam.musicdatabase.model.ArtistDTO;
 import com.wykessam.musicdatabase.services.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -47,9 +49,9 @@ public class ArtistController {
      * @return {@link CollectionModel} object.
      */
     @GetMapping(value = "")
-    public CollectionModel<EntityModel<Artist>> all() {
+    public CollectionModel<EntityModel<ArtistDTO>> all() {
 
-        List<EntityModel<Artist>> artists = artistService.all().stream()
+        List<EntityModel<ArtistDTO>> artists = artistService.all().stream()
                 .map(artistAssembler::toModel).collect(Collectors.toList());
 
         return CollectionModel.of(
@@ -65,17 +67,17 @@ public class ArtistController {
      * @return {@link EntityModel} object.
      */
     @GetMapping(value = "/{id}")
-    public EntityModel<Artist> one(@PathVariable Long id) {
+    public EntityModel<ArtistDTO> one(@PathVariable Long id) {
 
         return artistAssembler.toModel(artistService.getById(id));
 
     }
 
     @GetMapping(value = "/{id}/albums")
-    public CollectionModel<EntityModel<Album>> getAlbums(@PathVariable Long id) {
+    public CollectionModel<EntityModel<AlbumDTO>> getAlbums(@PathVariable Long id) {
 
         // get list of albums.
-        List<EntityModel<Album>> albums = artistService.getAlbumsByArtistId(id).stream()
+        List<EntityModel<AlbumDTO>> albums = artistService.getAlbumsByArtistId(id).stream()
                 .map(albumAssembler::toModel).collect(Collectors.toList());
 
         return CollectionModel.of(

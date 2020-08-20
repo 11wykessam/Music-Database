@@ -6,11 +6,11 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * DTO Representation of {@link Artist}.
+ * DTO for genres.
  */
 @Data
 @AllArgsConstructor
-public class ArtistDTO {
+public class GenreDTO {
 
     private Long id;
 
