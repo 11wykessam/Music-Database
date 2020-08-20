@@ -1,0 +1,17 @@
+package com.wykessam.musicdatabase.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+/**
+ * DTO Representation of {@link Album}.
+ */
+@Data
+@AllArgsConstructor
+public class AlbumDTO {
+
+    private Long id;
+
+    private String title;
+
+}
