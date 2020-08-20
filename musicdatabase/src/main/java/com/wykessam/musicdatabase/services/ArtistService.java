@@ -56,7 +56,7 @@ public class ArtistService {
 
         // extract the artist.
         Artist artist = getById(id);
-        return artist.getAlbums();
+        return null;
 
     }
 

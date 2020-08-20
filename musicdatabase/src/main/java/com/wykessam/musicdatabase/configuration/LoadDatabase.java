@@ -30,9 +30,6 @@ public class LoadDatabase {
             Album abbeyRoad = new Album("Abbey Road");
             Album disintegration = new Album("Disintegration");
 
-            theBeatles.getAlbums().add(abbeyRoad);
-            theCure.getAlbums().add(disintegration);
-
             log.info("Preloading " + artistRepository.save(theBeatles));
             log.info("Preloading " + artistRepository.save(theCure));
 

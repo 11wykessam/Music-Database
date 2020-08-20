@@ -8,8 +8,7 @@ import javax.persistence.*;
 /**
  * JPA Representation of an album.
  */
-@Entity(name = "Album")
-@Table(name = "ALBUM")
+@Entity
 @Data
 @NoArgsConstructor
 public class Album {

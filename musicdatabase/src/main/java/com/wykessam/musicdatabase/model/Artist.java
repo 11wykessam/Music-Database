@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 /**
  * JPA Representation of an artist.
  */
-@Entity(name = "Artist")
-@Table(name = "ARTIST")
+@Entity
 @Data
 @NoArgsConstructor
 public class Artist {
@@ -24,20 +23,13 @@ public class Artist {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "ARTIST", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Album> albums = new ArrayList<>();
-
     public Artist(String name) {
         this.name = name;
-        this.albums = new ArrayList<>();
     }
 
     public ArtistDTO toDTO() {
 
-        List<Long> albumIds = albums.stream()
-                .map(Album::getId).collect(Collectors.toList());
-
-        return new ArtistDTO(id, name, albumIds);
+        return new ArtistDTO(id, name, null);
 
     }
 
